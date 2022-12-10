@@ -69,10 +69,6 @@ does not affect the fact that this line is a `CALL`-typed AST node.
 In this section, we assume that the codebases have been cloned into `$CODEDIR`
 as in the [above section](#cloning-codebases).
 
-```
-CODEDIR=/tmp/codebases
-cd $CODEDIR
-```
 
 ### <a name="all-codebases"></a>All Codebases
 - Remove tests and `package-info.java`. As per [official
@@ -111,21 +107,23 @@ cd $CODEDIR
       ```
     - Change the first nested protected class to not inherit from the extended type.
 
-    ```
-    public class DBOutputFormat<K  extends DBWritable, V>
-        //extends org.apache.hadoop.mapreduce.lib.db.DBOutputFormat<K, V>
-        implements OutputFormat<K, V> {
+      ```
+      public class DBOutputFormat<K  extends DBWritable, V>
+          //extends org.apache.hadoop.mapreduce.lib.db.DBOutputFormat<K, V>
+          implements OutputFormat<K, V> {
 
-      /**
-       * A RecordWriter that writes the reduce output to a SQL table
-       */
-      protected class DBRecordWriter
-        //extends org.apache.hadoop.mapreduce.lib.db.DBOutputFormat<K, V>.DBRecordWriter
-        implements RecordWriter<K, V> {
-        // Code goes here.
+        /**
+         * A RecordWriter that writes the reduce output to a SQL table
+         */
+        protected class DBRecordWriter
+          //extends org.apache.hadoop.mapreduce.lib.db.DBOutputFormat<K, V>.DBRecordWriter
+          implements RecordWriter<K, V> {
+          // Code goes here.
+        }
       }
-    }
-    ```
+      ```
+
+
 ### Spring
 - Remove the following file, which does **not** have inline comments. This is
   needed to work around bugs in the Java parser.
@@ -134,8 +132,10 @@ cd $CODEDIR
   pushd $CODEDIR/spring-framework
   rm spring-core/src/main/java/org/springframework/aot/aot/hint/ReflectionHintsPredicates.java
   ```
+
+
 ### JUnit
-- Remove remaining tests not covered in the [common processing step](#all-codebases)
+- Remove remaining tests not covered in the [common processing step](#all-codebases).
 
   ```
   rm `find ./ -type f -name Tests.java
@@ -187,13 +187,17 @@ before, 5 after) for any (sub)project into a JSON representation. Note that
 Joern's Java parser can handle only about 1200 files, so it is best to
 parse subprojects or smaller subdivisions thereof.
 
+To process a given project, use commands like these:
+
 ```
 CODEDIR=/tmp/codebases
 OUTDIR=/tmp/proc
+PROJECT=hadoop
+SUBPROJECT=hadoop-common-project
 mkdir $OUTDIR
 cd joern
 ./joern --script ../extraction_scripts/ast_cpg_to_comment_stats.sc \
-     --params name=hadoop-common-project,out=$OUTDIR/output.json,importDir=$CODEDIR/hadoop/
+     --params name=$SUBPROJECT,out=$OUTDIR/output.json,importDir=$CODEDIR/$PROJECT/
 ```
 
 Here is how we processed the five codebases:
@@ -255,9 +259,10 @@ Here is how we processed the five codebases:
   foo.bar();  // This is a comment
   ```
 
-  Is equivalent to
+  is equivalent to:
 
   ```
   // This is a comment
   foo.bar();
+  ```
 
