@@ -192,7 +192,7 @@ CODEDIR=/tmp/codebases
 OUTDIR=/tmp/proc
 mkdir $OUTDIR
 cd joern
-./joern --script ../scripts/ast_cpg_to_comment_stats.sc \
+./joern --script ../extraction_scripts/ast_cpg_to_comment_stats.sc \
      --params name=hadoop-common-project,out=$OUTDIR/output.json,importDir=$CODEDIR/hadoop/
 ```
 
