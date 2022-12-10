@@ -10,7 +10,9 @@ snapshot hashes) and pre-process them.
 This is based on a fork of Joern that branched off at commit hash
 `f08de36032fa833ed65de0edab6c400d5ce2685f`.
 
-Please install JDK 11 and SBT as per [these steps](https://www.scala-sbt.org/1.x/docs/Setup.html)
+Please install JDK 11 and SBT as per [these
+steps](https://www.scala-sbt.org/1.x/docs/Setup.html). Next, set up and build
+Joern as follows:
 
 ```
 cd joern
@@ -19,6 +21,9 @@ sbt "joerncli / stage"
 ```
 
 ## <a name="cloning-codebases"></a>Cloning Codebases
+The following steps clones the codebases we used at the same snapshots we used
+in our work.
+
 ```
 CODEDIR=/tmp/codebases
 cd $CODEDIR
@@ -62,7 +67,7 @@ bugs. For example, removing `super` from an invocation like `super.close()`
 does not affect the fact that this line is a `CALL`-typed AST node.
 
 In this section, we assume that the codebases have been cloned into `$CODEDIR`
-as in the [above section](#cloning-codebases)
+as in the [above section](#cloning-codebases).
 
 ```
 CODEDIR=/tmp/codebases
@@ -95,7 +100,7 @@ cd $CODEDIR
 
 - The following are workarounds for bugs in Joern:
   - In `hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/java/org/apache/hadoop/yarn/webapp/hamlet2/Hamlet.java`:
-    - String-replace `this`  with `thiz`
+    - Replace `this`  with `thiz` (e.g. `s/this/thiz`).
   - Repeat the previous step for `DBInputFormat.java` as well, but apply to two more inner classes.
   - In `hadoop/hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-core/src/main/java/org/apache/hadoop/mapred/lib/db/DBOutputFormat.java`, Make the following changes:
     - Remove all calls to super, except the constructor.
