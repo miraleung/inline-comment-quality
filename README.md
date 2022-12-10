@@ -7,6 +7,9 @@ We've also included steps to clone the five codebases we analyzed (at our
 snapshot hashes) and pre-process them.
 
 ## Joern Set-up
+This is based on a fork of Joern that branched off at commit hash
+`f08de36032fa833ed65de0edab6c400d5ce2685f`.
+
 Please install JDK 11 and SBT as per [these steps](https://www.scala-sbt.org/1.x/docs/Setup.html)
 
 ```
@@ -173,9 +176,6 @@ cd $CODEDIR
             .newInferenceGraph();
     ```
 
-
-
-
 ## Extracting Inline Comments
 The following will extract inline comments and its surrounding lines of code (1
 before, 5 after) for any (sub)project into a JSON representation. Note that
@@ -191,6 +191,7 @@ cd joern
      --params name=hadoop-common-project,out=$OUTDIR/output.json,importDir=$CODEDIR/hadoop/
 ```
 
+Here is how we processed the five codebases:
 - Hadoop: Process this one sub-project at a time. Larger subprojects may need
   to be split into two or three passes.
 - Spring: Process this by sub-project. Alternatively, subdivide the project
@@ -201,8 +202,6 @@ cd joern
 - JDK: Ditto, or 10 subdivisions.
 
 
-## Optimization Tips
-
 ## Troubleshooting
 - **Clear the cache.** Once Joern processes a project, it retains state under
   `workspace`, so it may not pick up changes to the source code. To fix this,
@@ -212,11 +211,12 @@ cd joern
   be ignored.
 
 - **Careful with delete-based optimizations.** One might think that deleting
-  all Java files without inline comments will speed things up, but this may
-  lead to other weird errors like the next one. (At least we're not parsing
-  C++, which also parses all the standard libraries. They're also included in
-  the final output, so processing time is slower, and fewer source files can be
-  parsed compared to Java.)
+  all Java files without inline comments will speed up processing times, but
+  this may lead to errors like the following import issue, or others we haven't
+  seen yet. (At least we're not parsing C++ - that parser includes all the
+  standard libraries, which are bundled into the output. This also means that
+  C++ processing times are slower, and fewer source files can be parsed
+  compared to Java.)
 
 - **Dependency graph problems.** The following error may be due to importing a
   package that depends on a type outside the package.
