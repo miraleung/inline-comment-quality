@@ -167,7 +167,7 @@ as in the [above section](#cloning-codebases).
     ```
 
   - Change line  667 and 1079 in `jdk/src/jdk.compiler/share/classes/com/sun/tools/javac/comp/DeferredAttr.java` by removing
-    the spaces in `.new Thing`. Example for L667:
+    the spaces in `.new ConstructorName`. Example for L667:
 
     ```
     InferenceGraph graph = infer.new GraphSolver(inferenceContext, types.noWarnings)
@@ -201,14 +201,14 @@ cd joern
 ```
 
 Here is how we processed the five codebases:
-- Hadoop: Process this one sub-project at a time. Larger subprojects may need
+- **Hadoop.** Process this one sub-project at a time. Larger subprojects may need
   to be split into two or three passes.
-- Spring: Process this by sub-project. Alternatively, subdivide the project
+- **Spring.** Process this by sub-project. Alternatively, subdivide the project
   into 5 roughly equal subdivisions. This worked for us but needs to be tracked
   carefully.
-- Guava: Per-package processing, or 2 project subdivisions.
-- JUnit: Per-package processing, or 2 project subdivisions.
-- JDK: Ditto, or 10 subdivisions.
+- **Guava.** Per-package processing, or 2 project subdivisions.
+- **JUnit.** Same as Guava.
+- **JDK.** Per-package processing, or 10 project subdivisions.
 
 
 ## Troubleshooting
