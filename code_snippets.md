@@ -1,4 +1,4 @@
-# Code Snippetso
+# Code Snippets
 
 These are the code snippets used in our study.
 
